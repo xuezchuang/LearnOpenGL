@@ -14,7 +14,7 @@ void processInput(GLFWwindow *window);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-//#define DSA
+#define DSA
 
 #ifdef DSA
 	bool bUseDSA = true;
@@ -157,72 +157,89 @@ int main()
 		1, 2, 3  // second triangle
 	};
 	unsigned int VBO, VAO, EBO;
+	unsigned int quadVAO, quadVBO;
+	float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
+	// positions   // texCoords
+	-0.5,  0.5,  0.0f, 1.0f,
+	-0.5, -0.5,  0.0f, 0.0f,
+	 0.5, -0.5,  1.0f, 0.0f,
 
-
+	-0.5,  0.5,  0.0f, 1.0f,
+	 0.5, -0.5,  1.0f, 0.0f,
+	 0.5,  0.5,  1.0f, 1.0f
+	};
 
 	if (bUseDSA)
 	{
-		glCreateVertexArrays(1, &VAO);
-		glCreateBuffers(1, &VBO);
-		glCreateBuffers(1, &EBO);
-		glBindVertexArray(VAO);
+		glCreateVertexArrays(1, &quadVAO);
+		glCreateBuffers(1, &quadVBO);
+		glNamedBufferData(quadVBO, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
+		glBindVertexArray(quadVAO);
+		glVertexArrayVertexBuffer(quadVAO, 0, quadVBO, 0, 4 * sizeof(float));
+		glVertexArrayAttribFormat(quadVAO, 0, 2, GL_FLOAT, GL_FALSE, 0);
+		glVertexArrayAttribBinding(quadVAO, 0, 0);
+		glEnableVertexArrayAttrib(quadVAO, 0);
+		glVertexArrayAttribFormat(quadVAO, 1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float));
+		glVertexArrayAttribBinding(quadVAO, 1, 0);
+		glEnableVertexArrayAttrib(quadVAO, 1);
+		glBindVertexArray(quadVAO);
+		// 
+		//glCreateVertexArrays(1, &VAO);
+		//glCreateBuffers(1, &VBO);
+		//glCreateBuffers(1, &EBO);
+		//glBindVertexArray(VAO);
 
-		//glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glNamedBufferData(VBO, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glNamedBufferData(EBO, sizeof(indices), indices, GL_STATIC_DRAW);
+		////glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		//glNamedBufferData(VBO, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		////glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		//glNamedBufferData(EBO, sizeof(indices), indices, GL_STATIC_DRAW);
 
-		// 将顶点缓冲区绑定到顶点数组对象的一个绑定点上
-		glVertexArrayVertexBuffer(VAO, 0, VBO, 0, sizeof(float) * 8);
+		//// 将顶点缓冲区绑定到顶点数组对象的一个绑定点上
+		//glVertexArrayVertexBuffer(VAO, 0, VBO, 0, sizeof(float) * 8);
 
-		// 设置顶点属性0
-		glVertexArrayAttribFormat(VAO, 0, 3, GL_FLOAT, GL_FALSE, 0);
-		glVertexArrayAttribBinding(VAO, 0, 0);
-		glEnableVertexArrayAttrib(VAO, 0);
+		//// 设置顶点属性0
+		//glVertexArrayAttribFormat(VAO, 0, 3, GL_FLOAT, GL_FALSE, 0);
+		//glVertexArrayAttribBinding(VAO, 0, 0);
+		//glEnableVertexArrayAttrib(VAO, 0);
 
-		// 设置顶点属性1
-		glVertexArrayAttribFormat(VAO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3);
-		glVertexArrayAttribBinding(VAO, 1, 0);
-		glEnableVertexArrayAttrib(VAO, 1);
+		//// 设置顶点属性1
+		//glVertexArrayAttribFormat(VAO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3);
+		//glVertexArrayAttribBinding(VAO, 1, 0);
+		//glEnableVertexArrayAttrib(VAO, 1);
 
-		// 设置顶点属性2
-		glVertexArrayAttribFormat(VAO, 2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 6);
-		glVertexArrayAttribBinding(VAO, 2, 0);
-		glEnableVertexArrayAttrib(VAO, 2);
-
-		//glBindVertexBuffer(0, VBO, 0, 8 * sizeof(float));
+		//// 设置顶点属性2
+		//glVertexArrayAttribFormat(VAO, 2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 6);
+		//glVertexArrayAttribBinding(VAO, 2, 0);
+		//glEnableVertexArrayAttrib(VAO, 2);
+		//glBindVertexArray(VAO);
 	}
 	else
 	{
-		glGenVertexArrays(1, &VAO);
-		glGenBuffers(1, &VBO);
-		glGenBuffers(1, &EBO);
-		glBindVertexArray(VAO);
+		glGenVertexArrays(1, &quadVAO);
+		glGenBuffers(1, &quadVBO);
+		//glGenBuffers(1, &EBO);
+		glBindVertexArray(quadVAO);
 
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 		// position attribute
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
 		// color attribute
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 		glEnableVertexAttribArray(1);
-		// texture coord attribute
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-		glEnableVertexAttribArray(2);
 	}
 
 
 
 	int width, height, nrChannels;
 	unsigned int texture = loadTexture(FileSystem::getPath("resources/textures/grass.png").c_str());
-
-	//glBindVertexArray(0);
-	glBindVertexArray(VAO);
+	//unsigned int texture = loadTexture(FileSystem::getPath("resources/textures/container.jpg").c_str());
+	
 	// render loop
 	// -----------
 	while (!glfwWindowShouldClose(window))
@@ -244,19 +261,27 @@ int main()
 		}
 		else
 		{
+			glActiveTexture(0);
 			glBindTexture(GL_TEXTURE_2D, texture);
 		}
 
 		// render container
 		ourShader.use();
-		//glBindVertexArray(VAO);
+		glBindVertexArray(quadVAO);
 		if (bUseDSA)
 		{
-			glVertexArrayElementBuffer(VAO, EBO);
+			//glBindVertexArray(quadVAO);
+			//glVertexArrayElementBuffer(VAO, EBO);
 			glBindTextureUnit(0, texture);
+			
+			//glDrawArrays(GL_TRIANGLES, 0, 6);
+			//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
-		
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		else
+		{
+			//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		}
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
