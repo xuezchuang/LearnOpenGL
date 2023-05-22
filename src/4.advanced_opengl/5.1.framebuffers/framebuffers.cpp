@@ -170,31 +170,34 @@ int main()
         glCreateVertexArrays(1, &cubeVAO);
         glCreateBuffers(1, &cubeVBO);
 		glNamedBufferData(cubeVBO, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
-		//glBindVertexArray(cubeVAO);
-        glVertexArrayVertexBuffer(cubeVAO, 0, cubeVBO, 0, 5 * sizeof(float));
-		glVertexArrayAttribFormat(cubeVAO, 0, 3, GL_FLOAT, GL_FALSE, 0);
-        glVertexArrayAttribBinding(cubeVAO, 0, 0);
-		glEnableVertexArrayAttrib(cubeVAO, 0);
-		glVertexArrayAttribFormat(cubeVAO, 1, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
-		glVertexArrayAttribBinding(cubeVAO, 1, 0);
-		glEnableVertexArrayAttrib(cubeVAO, 1);
 		// plane VAO
 		glCreateVertexArrays(1, &planeVAO);
 		glCreateBuffers(1, &planeVBO);
 		glNamedBufferData(planeVBO, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW);
+		// screen quad VAO
+		glCreateVertexArrays(1, &quadVAO);
+		glCreateBuffers(1, &quadVBO);
+		glNamedBufferData(quadVBO, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
+
 		//glBindVertexArray(cubeVAO);
+		glVertexArrayVertexBuffer(cubeVAO, 0, cubeVBO, 0, 5 * sizeof(float));
+		glVertexArrayAttribFormat(cubeVAO, 0, 3, GL_FLOAT, GL_FALSE, 0);
+		glVertexArrayAttribBinding(cubeVAO, 0, 0);
+		glEnableVertexArrayAttrib(cubeVAO, 0);
+		glVertexArrayAttribFormat(cubeVAO, 1, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
+		glVertexArrayAttribBinding(cubeVAO, 1, 0);
+		glEnableVertexArrayAttrib(cubeVAO, 1);
+
+		//glBindVertexArray(planeVAO);
 		glVertexArrayVertexBuffer(planeVAO, 0, planeVBO, 0, 5 * sizeof(float));
 		glVertexArrayAttribFormat(planeVAO, 0, 3, GL_FLOAT, GL_FALSE, 0);
 		glVertexArrayAttribBinding(planeVAO, 0, 0);
 		glEnableVertexArrayAttrib(planeVAO, 0);
 		glVertexArrayAttribFormat(planeVAO, 1, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
-        glVertexArrayAttribBinding(planeVAO, 1, 0);
+		glVertexArrayAttribBinding(planeVAO, 1, 0);
 		glEnableVertexArrayAttrib(planeVAO, 1);
-		// screen quad VAO
-		glCreateVertexArrays(1, &quadVAO);
-		glCreateBuffers(1, &quadVBO);
-		glNamedBufferData(quadVBO, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
-		//glBindVertexArray(cubeVAO);
+
+		//glBindVertexArray(quadVAO);
 		glVertexArrayVertexBuffer(quadVAO, 0, quadVBO, 0, 4 * sizeof(float));
 		glVertexArrayAttribFormat(quadVAO, 0, 2, GL_FLOAT, GL_FALSE, 0);
 		glVertexArrayAttribBinding(quadVAO, 0, 0);

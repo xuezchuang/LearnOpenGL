@@ -204,6 +204,13 @@ int main()
     shader.use();
     shader.setInt("texture1", 0);
 
+	//std::map<float, glm::vec3> sorted;
+	//for (unsigned int i = 0; i < windows.size(); i++)
+	//{
+	//	float distance = glm::length(camera.Position - windows[i]);
+	//	sorted[distance] = windows[i];
+	//}
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -216,16 +223,16 @@ int main()
 
         // input
         // -----
-        processInput(window);
+		processInput(window);
 
-        // sort the transparent windows before rendering
-        // ---------------------------------------------
-        std::map<float, glm::vec3> sorted;
-        for (unsigned int i = 0; i < windows.size(); i++)
-        {
-            float distance = glm::length(camera.Position - windows[i]);
-            sorted[distance] = windows[i];
-        }
+		//sort the transparent windows before rendering
+		//---------------------------------------------
+		std::map<float, glm::vec3> sorted;
+		for (unsigned int i = 0; i < windows.size(); i++)
+		{
+			float distance = glm::length(camera.Position - windows[i]);
+			sorted[distance] = windows[i];
+		}
 
         // render
         // ------
@@ -239,6 +246,7 @@ int main()
         glm::mat4 model = glm::mat4(1.0f);
         shader.setMat4("projection", projection);
         shader.setMat4("view", view);
+
         // cubes
         glBindVertexArray(cubeVAO);
         glActiveTexture(GL_TEXTURE0);
@@ -256,16 +264,16 @@ int main()
         model = glm::mat4(1.0f);
         shader.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 6);
-        // windows (from furthest to nearest)
+        //// windows (from furthest to nearest)
         glBindVertexArray(transparentVAO);
         glBindTexture(GL_TEXTURE_2D, transparentTexture);
-        for (std::map<float, glm::vec3>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
-        {
-            model = glm::mat4(1.0f);
-            model = glm::translate(model, it->second);
-            shader.setMat4("model", model);
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-        }
+		for (std::map<float, glm::vec3>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
+		{
+			model = glm::mat4(1.0f);
+			model = glm::translate(model, it->second);
+			shader.setMat4("model", model);
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+		}
 
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
