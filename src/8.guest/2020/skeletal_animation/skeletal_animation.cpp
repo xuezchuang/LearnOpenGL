@@ -82,7 +82,7 @@ int main()
 
 	// build and compile shaders
 	// -------------------------
-	Shader ourShader("anim_model_vs.glsl", "anim_model_fs.glsl");
+	Shader ourShader("anim_model.vs", "anim_model.fs");
 
 	
 	// load models
@@ -124,9 +124,9 @@ int main()
 		ourShader.setMat4("projection", projection);
 		ourShader.setMat4("view", view);
 
-		auto transforms = animator.GetPoseTransforms();
+        auto transforms = animator.GetFinalBoneMatrices();
 		for (int i = 0; i < transforms.size(); ++i)
-			ourShader.setMat4("finalBonesTransformations[" + std::to_string(i) + "]", transforms[i]);
+			ourShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
 
 
 		// render the loaded model
